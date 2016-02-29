@@ -1,10 +1,11 @@
 class BorderCreator
   attr_reader :worksheet, :cells, :edges
 
-  def initialize(worksheet, cells, edges)
+  def initialize(worksheet, cells, edges, options)
     @worksheet = worksheet
     @cells     = cells
     @edges     = edges
+    @options   = options
   end
 
   def draw
@@ -25,10 +26,10 @@ class BorderCreator
   end
 
   def add_border(position)
+    substyle ||= {style: :thin, color: '000000', edges: [position.to_sym]}
+    substyle = substyle.merge(@options) unless @options.blank?
     style = {
-      border: {
-        style: :thin, color: '000000', edges: [position.to_sym]
-      }
+        border: substyle
     }
     worksheet.add_style border_cells[position.to_sym], style
     # add_style border_cells(cell_ref)[position.to_sym], style

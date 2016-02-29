@@ -25,9 +25,9 @@ module AxlsxStyler
       #   add_border 'C2:G10', [:top]
       #   add_border 'C2:G10'
       # @TODO: allow to pass in custom border style
-      def add_border(cell_ref, edges = :all)
+      def add_border(cell_ref, edges = :all, options = {})
         cells = self[cell_ref]
-        BorderCreator.new(self, cells, edges).draw
+        BorderCreator.new(self, cells, edges, options).draw
       end
     end
   end
