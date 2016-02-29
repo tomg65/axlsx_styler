@@ -27,7 +27,7 @@ class BorderCreator
 
   def add_border(position)
     substyle ||= {style: :thin, color: '000000', edges: [position.to_sym]}
-    substyle = substyle.merge(@options) unless @options.blank?
+    substyle = substyle.merge(@options) unless @options.empty?
     style = {
         border: substyle
     }

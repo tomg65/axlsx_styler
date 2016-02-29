@@ -37,6 +37,31 @@ class IntegrationTest < MiniTest::Test
     assert_equal 12 + 2, @workbook.style_index.keys.max
   end
 
+  def test_table_with_styled_borders
+    @filename = 'styled_borders_test'
+    @workbook.add_worksheet do |sheet|
+      sheet.add_row
+      sheet.add_row ['', 'Product', 'Category',  'Price']
+      sheet.add_row ['', 'Butter', 'Dairy',      4.99]
+      sheet.add_row ['', 'Bread', 'Baked Goods', 3.45]
+      sheet.add_row ['', 'Broccoli', 'Produce',  2.99]
+      sheet.add_row ['', 'Pizza', 'Frozen Foods',  4.99]
+      sheet.column_widths 5, 20, 20, 20
+
+      # using AxlsxStyler DSL
+      sheet.add_style 'B2:D2', b: true
+      sheet.add_style 'B2:B6', b: true
+      sheet.add_style 'B2:D2', bg_color: '95AFBA'
+      sheet.add_style 'B3:D6', bg_color: 'E2F89C'
+      sheet.add_style 'D3:D6', alignment: { horizontal: :left }
+      sheet.add_border 'B2:D6', :all, {color: '0000FF', style: :thick}
+      sheet.add_border 'B3:D3', [:top], {style: :medium}
+    end
+    @workbook.apply_styles
+    assert_equal 12, @workbook.style_index.count
+    assert_equal 12 + 2, @workbook.style_index.keys.max
+  end
+
   def test_table_with_num_fmt
     @filename = 'num_fmt_test'
     t = Time.now
